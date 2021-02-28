@@ -10,11 +10,10 @@ export function Feelings(props: any) {
         async function getFeelings() {
             const response = await fetch("http://localhost:4000/feelings");
             const json: IFeeling[] = await response.json();
-            console.log("fetched")
             setFeelings(json);
         }
-
         const id = setInterval(() => getFeelings(), 5000);
+        getFeelings();
         return () => clearInterval(id);
     }, []);
     return (<div className="feelings">{feelings.map((f) => <Feeling key={f.id} {...f} />)}</div>);
