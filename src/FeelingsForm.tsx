@@ -5,7 +5,8 @@ import { Picker } from 'emoji-mart'
 
 import useLocalStorage from "./useLocalStorage"
 
-export function FeelingsForm(props: any) {
+export function FeelingsForm(props: { apiBase: string }) {
+
 
     // Similar to useState but first arg is key to the value in local storage.
     const [username, setUsername] = useLocalStorage<Username>('username', 'nbogie');
@@ -17,8 +18,7 @@ export function FeelingsForm(props: any) {
 
         const newFeeling: IFeeling = { username: username as string, description, emoji };
         const body = JSON.stringify(newFeeling);
-
-        const response = await fetch("http://localhost:4000/feelings",
+        const response = await fetch(`${props.apiBase}/feelings`,
             {
                 method: 'POST',
                 headers: {

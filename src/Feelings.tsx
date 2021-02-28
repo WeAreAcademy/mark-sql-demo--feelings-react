@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { IFeeling } from "./types";
 
 
-export function Feelings(props: any) {
-
+export function Feelings(props: { apiBase: string }) {
 
     const [feelings, setFeelings] = useState<IFeeling[]>([]);
     useEffect(() => {
         async function getFeelings() {
-            const response = await fetch("http://localhost:4000/feelings");
+            const response = await fetch(props.apiBase + "/feelings");
             const json: IFeeling[] = await response.json();
             setFeelings(json);
         }
