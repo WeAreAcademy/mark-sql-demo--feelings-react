@@ -14,7 +14,7 @@ export function Feelings(props: { apiBase: string }) {
         const id = setInterval(() => getFeelings(), 5000);
         getFeelings();
         return () => clearInterval(id);
-    }, []);
+    }, [props.apiBase]);
     return (<div className="feelings">{feelings.map((f) => <Feeling key={f.id} {...f} />)}</div>);
 }
 function Feeling(props: IFeeling) {

@@ -9,19 +9,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.App {
+  max-width: 1080px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
 .feeling {
-  border: 2px solid black;
+  border: 1px solid gray;
   border-radius: 5px;
-  margin: 5px;
+  margin: 6px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 2px;
 }
 
 .name {
   min-width: 100px;
-  border-right: 1px solid green;
 }
 
 .emoji {

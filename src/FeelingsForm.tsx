@@ -43,7 +43,6 @@ export function FeelingsForm(props: { apiBase: string }) {
         }
     }
     function resetForm() {
-        setEmoji("")
         setDescription("")
     }
 
