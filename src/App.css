@@ -13,7 +13,12 @@ body {
   max-width: 1080px;
   margin: 0 auto;
   margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
 }
+
 .feeling {
   border: 1px solid gray;
   border-radius: 5px;
@@ -22,6 +27,7 @@ body {
   flex-direction: row;
   justify-content: flex-start;
   padding: 2px;
+
 }
 
 .name {
@@ -32,15 +38,30 @@ body {
   min-width: 100px;
 }
 
+.fetch-error {
+  border: 2px solid pink;
+}
+
 .feelings-form {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
+
+.feelings {
+  padding: 20px;
+  border-radius: 6px;
+  width: 50%;
+}
+
+
 .inputs {
+
   display: flex;
   flex-direction: row;
   margin-bottom: 20px;
 }
+
 .inputs * {
   margin: 5px;
 }
