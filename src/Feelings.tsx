@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { IFeeling } from "./types";
 import { badShuffle, pick } from './utils';
+import { toast } from 'react-toastify';
 
 type FetchStatus =
     | { status: "done", feelings: IFeeling[] }
@@ -26,6 +27,7 @@ export function Feelings(props: { apiBase: string }) {
             } catch (error: unknown) {
                 console.error("could not fetch: ", error);
                 setFetchStatus({ status: "error", error: "" + error })
+                toast.error("failed to fetch", { autoClose: 1000, hideProgressBar: true })
             }
         }
         const id = setInterval(() => fetchAndStoreFeelings(), 5000);
