@@ -13,6 +13,8 @@ type FetchStatus =
 export function Feelings(props: { apiBase: string }) {
 
     const [fetchStatus, setFetchStatus] = useState<FetchStatus>({ status: "not-started" });
+    const [shouldAutoFetch, setShouldAutoFetch] = useState(true);
+
     const fakeFeelings = useMemo(() => generateFakeFeelings(7), []);
     useEffect(() => {
 
@@ -30,14 +32,17 @@ export function Feelings(props: { apiBase: string }) {
                 toast.error("failed to fetch", { autoClose: 1000, hideProgressBar: true })
             }
         }
-        const id = setInterval(() => fetchAndStoreFeelings(), 5000);
         fetchAndStoreFeelings();
-        return () => clearInterval(id);
-    }, [props.apiBase]);
+        if (shouldAutoFetch) {
+            const id = setInterval(() => fetchAndStoreFeelings(), 10000);
+            return () => clearInterval(id);
+        }
+    }, [props.apiBase, shouldAutoFetch]);
     const anyErrorClass = fetchStatus.status === "error" ? " fetch-error" : "";
     return (
         <div className={"feelings" + anyErrorClass} >
-            {fetchStatus.status === "error" && <div>Failed to fetch</div>}
+            <div>auto-refresh: <input type="checkbox" checked={shouldAutoFetch} onChange={() => setShouldAutoFetch(p => !p)} /></div>
+            {fetchStatus.status === "error" && <div>Failed to fetch - showing fake data</div>}
             {fetchStatus.status === "pending" && <div>⏳Loading!⌛️</div>}
             {fetchStatus.status === "done" &&
                 <FeelingsList feelings={fetchStatus.feelings} />
@@ -78,10 +83,11 @@ function generateFakeFeelings(num: number): IFeeling[] {
         throw new Error("too many fake feelings requested: " + num);
     }
     const names = allNames.slice(0, num);
-    return names.map(n => ({
+    return names.map((n, ix) => ({
         username: n,
         description: pick('focused tired excited confused'.split(" ")),
-        emoji: pick(['🚜', '😎', '🥷🏽', '🤯', "😊", "👍", "✨", "⚡", "😭", "🎉", "🔥", "🤔", "💀"])
+        emoji: pick(['🚜', '😎', '🥷🏽', '🤯', "😊", "👍", "✨", "⚡", "😭", "🎉", "🔥", "🤔", "💀"]),
+        id: ix
     }))
 
 }

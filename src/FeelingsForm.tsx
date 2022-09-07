@@ -4,6 +4,7 @@ import 'emoji-mart/css/emoji-mart.css'
 import { Picker } from 'emoji-mart'
 
 import useLocalStorage from "./useLocalStorage"
+import { toast } from 'react-toastify';
 
 export function FeelingsForm(props: { apiBase: string }) {
 
@@ -18,16 +19,22 @@ export function FeelingsForm(props: { apiBase: string }) {
 
         const newFeeling: IFeeling = { username: username as string, description, emoji };
         const body = JSON.stringify(newFeeling);
-        const response = await fetch(`${props.apiBase}/feelings`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body
-            }
-        );
-        console.log("posted: ", response);
+        try {
+            const response = await fetch(`${props.apiBase}/feelings`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body
+                }
+            );
+            console.log("posted: ", response);
+            toast.success("updated!", { autoClose: 1000, hideProgressBar: true })
+        } catch (error: unknown) {
+            toast.error("Error posting: " + error, { autoClose: 2000 });
+            console.error("error posting: " + error);
+        }
         //const json = await response.json();
         //todo: handle error(s)
     }
@@ -40,6 +47,9 @@ export function FeelingsForm(props: { apiBase: string }) {
         if (validateFeelings()) {
             postFeelings();
             resetForm();
+        }
+        else {
+            toast.error("Invalid: enter name and emoji")
         }
     }
     function resetForm() {
@@ -61,17 +71,16 @@ export function FeelingsForm(props: { apiBase: string }) {
                     /* @ts-ignore */
                     setUsername(ev.target.value)
                 }}
-                placeholder="your github username" />
+                placeholder="your github username"
+            />
 
-            <span onClick={() => setEmojiPickerVisible(true)}>Emoji: {emoji}</span>
+            <button onClick={() => setEmojiPickerVisible(true)}>Emoji {emoji}</button>
 
-
-            <input value={description}
+            <div>Description: <input value={description}
                 onChange={(ev) => setDescription(ev.target.value)}
                 placeholder="description" />
-            <br />
+            </div>
             <button onClick={handleSendClick} >Send</button>
-
         </div>
         {
             emojiPickerVisible && (
